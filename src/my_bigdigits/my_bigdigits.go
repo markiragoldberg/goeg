@@ -1,27 +1,11 @@
 /*
-
 	Mark Ira Goldberg 2016
-
-*/
-
-
-/*
-	Tweak bigdigits (optionally starting with preexisting code) to
-	1) Output a usage message if param -h or --help is used
-	2) Add a row of asterisks before and after the bigdigits if
-	param -b or --bar is used
-	3) Retain prior functionality if neither new param is used
+	Apache License 2.0
 	
-	usage bigdigits [-b|--bar] <whole-number>
-	-b --bar  draw an underbar and an overbar
-	
-	Advice:
-	
-	a) import strings and use strings.repeat(string, int),
-	probably to create the bars (returns string repeated int times)
-	b) use either go's basic "flag" package to handle X11 options, 
-	or get something better from godashboard.appspot.com/project
-
+	Added and implemented:
+		-h, --help option
+		-b, --bar option
+	to bigdigits.
 */
 
 package main
@@ -53,30 +37,25 @@ func main() {
 	}
 	
 	stringOfDigits := args[0]
-	//for every row of the '0' bigDigit representation
-	//since height is constant for all bigdigits,
-	//for the height of the bigDigit representation
-	
+	//Every row in the final output (all digits are same height)
 	for row := range bigDigits[0] {
 		line := ""
-		//for every digit in the stringOfDigits input
-		//and, correspondingly, column of bigDigit output
+		//Every digit in the row of output
 		for column := range stringOfDigits {
-			//convert char input to corresponding integer
-			//used as index for bigDigits slice
+			//convert character of a digit to corresponding integer
 			digit := stringOfDigits[column] - '0'
 			if 0 <= digit && digit <= 9 {
 				line += bigDigits[digit][row] + "  "
 			} else {
 				log.Fatal("invalid whole number")
 			}
+			//don't print until all digits are added to the row
 		}
 		//-b: add the overbar
 		if row == 0 && *barFlag {
 			//subtract 2 to account for trailing "  " in line
 			fmt.Println(strings.Repeat("*", len(line)-2))
 		}
-		//only print once all digits in the row are handled
 		fmt.Println(line)
 		//-b: add the underbar
 		if row == len(bigDigits[0])-1 && *barFlag {
