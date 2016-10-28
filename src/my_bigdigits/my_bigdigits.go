@@ -30,6 +30,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	//note to self: I didn't like this one
 //	"github.com/jessevdk/go-flags"
 	"github.com/pborman/getopt"
@@ -51,14 +52,11 @@ func main() {
 		os.Exit(1)
 	}
 	
-	if *barFlag {
-		fmt.Println("Bar flag set")
-	}
-	
 	stringOfDigits := args[0]
 	//for every row of the '0' bigDigit representation
 	//since height is constant for all bigdigits,
 	//for the height of the bigDigit representation
+	
 	for row := range bigDigits[0] {
 		line := ""
 		//for every digit in the stringOfDigits input
@@ -73,8 +71,17 @@ func main() {
 				log.Fatal("invalid whole number")
 			}
 		}
+		//-b: add the overbar
+		if row == 0 && *barFlag {
+			//subtract 2 to account for trailing "  " in line
+			fmt.Println(strings.Repeat("*", len(line)-2))
+		}
 		//only print once all digits in the row are handled
 		fmt.Println(line)
+		//-b: add the underbar
+		if row == len(bigDigits[0])-1 && *barFlag {
+			fmt.Println(strings.Repeat("*", len(line)-2))
+		}
 	}
 }
 
