@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+#Specific executables
+hello
+my_bigdigits
